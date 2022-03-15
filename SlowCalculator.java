@@ -5,6 +5,7 @@ public class SlowCalculator implements Runnable {
     private final long N;
 	private Thread thread;
 	private int result;
+	// if this boolean is false, the calculation will stop
 	private AtomicBoolean running = new AtomicBoolean( false );
 
     public SlowCalculator(final long N) {
@@ -17,13 +18,11 @@ public class SlowCalculator implements Runnable {
 	public void start() {
 		running.set( true );
 		thread.start();
-// System.out.println( N + " started" );
 	}
 
 	public void run() {
 		result = calculate(N, running);
 		running.set( false );
-// System.out.println( N + " finished" );
 	}
 
 	public boolean running() {
@@ -36,9 +35,9 @@ public class SlowCalculator implements Runnable {
 		} catch( InterruptedException e ) { e.printStackTrace(); }
 	}
 
+	// stop the calculation by setting the flag to false
 	public void kill() {
 		running.set( false );
-// System.out.println( N + " terminated" );
 	}
 
 	/**
